@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cloud Browser</title>
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; overflow: hidden; }
+        .nav { display: flex; padding: 10px; background: #111; }
+        input { flex: 1; padding: 12px; border-radius: 5px; border: 1px solid #444; background: #222; color: #fff; }
+        iframe { width: 100%; height: calc(100vh - 60px); border: none; background: #fff; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <input type="text" id="url" placeholder="Enter URL (e.g. https://google.com)">
+    </div>
+    <iframe id="view"></iframe>
+    <script>
+        const input = document.getElementById('url');
+        input.addEventListener('keypress', e => {
+            if (e.key === 'Enter') {
+                let url = input.value;
+                if (!url.startsWith('http')) url = 'https://' + url;
+                document.getElementById('view').src = '/proxy?url=' + encodeURIComponent(url);
+            }
+        });
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+    </script>
+</body>
+</html>
